@@ -10,7 +10,7 @@ def load_data():
     with open('data/driving_log.csv') as csvfile:
         reader = csv.reader(csvfile)
         for line in reader:
-            # Discarding all data points where the steering angle is 0.
+            # Filter out all data the data points where the steering angle is 0.
             # There are alot of examples in the supplied training data set where it is 0 and this biases the model.
             if float(line[3]) != 0:
                 lines.append(line)
