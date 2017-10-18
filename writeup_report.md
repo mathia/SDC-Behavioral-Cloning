@@ -1,4 +1,4 @@
-#**Behavioral Cloning** 
+# **Behavioral Cloning** 
 
 **Behavioral Cloning Project**
 
@@ -43,16 +43,15 @@ My initial model is based on the LeNet CNN architecture with a final fully conne
 * The first convolutional layer uses a 5x5 kernel with valid padding and a ReLU activation function.  The output depth is 6.  https://keras.io/layers/convolutional/#conv2d
 * Then max pooling is applied with the Keras default 2x2 filter size and a stride of 2. https://keras.io/layers/pooling/#maxpooling2d
 * The 2nd convolutional layer also uses a 5x5 kernel with valid padding and a ReLU activation function.  The output depth is 6.
-* max pooling is applied.
 * Again max pooling is applied with the Keras default 2x2 filter size and a stride of 2.
 * The output is then flattened to 1-D.  https://keras.io/layers/core/#flatten
 * Then a fully connected layer (AKA dense layer) with 120 nodes.  https://keras.io/layers/core/#dense
 * Then a second fully connected with 84 nodes.
-* Then a final fully ocnnected layer with one output node.
+* Then a final fully connected layer with one output node.
 
 ### 2. Attempts to reduce overfitting in the model
 
-The data was split with 80% used for training and 20% used for validation.  It was found that while the training and validation accuracy and loss graphs might look good (ie good accuracy with both training and validation) the actual performance in the simulator would often not keep the vehicle on the track.  The most effective way found to allow the model to generalize to perform well on the track was to add additional data by recording manual driving sessions.
+The data was split with 80% used for training and 20% used for validation.  It was found that while the training and validation accuracy and loss graphs might look good with regards to over or underfitting the actual performance in the simulator would not be good enough to keep the vehicle on the track.  The most effective way found to allow the model to perform well on the track was to add additional data by recording manual driving sessions.
 
 ### 3. Model parameter tuning
 
@@ -60,7 +59,7 @@ The model used an adam optimizer, so the learning rate was not tuned manually.
 
 ### 4. Appropriate training data
 
-The training data provided with the project contained many data points where the steering angle was 0, ie the car was driving straight.  Filtering out these data points allowed the model to learn to deal with turns better.  When adding additional data by manually driving the car it was found to be much more effective to use smooth inputs by controlling the car with the mouse.  Additionally turns were negotiated at low speeds to ensure the car stayed in the middle of the road and that there were many data points recorded mid turn.  
+The training data provided with the project contained many data points where the steering angle was 0, ie the car was driving straight.  Filtering out these data points allowed the model to learn to deal with turns better.  When adding additional data by manually driving the car it was found to be much more effective to use smooth inputs by controlling the car with a mouse.  Additionally, turns were negotiated at low speeds to ensure the car stayed in the middle of the road and that there were many data points recorded mid-turn.  
 
 
 ## Model Architecture and Training Strategy
@@ -71,9 +70,9 @@ The overall strategy for deriving a model architecture was to use an existing an
 
 My first step was to use a LeNet architecture convolution neural network model.  While this model is performing regression to output continuous steering angles I thought the LeNet architecutre previously used for image classification could perform well as the output steering angle does not require a huge variance to get the car around the track.  This model is essentially classifying road images as steering angles and LeNet performs well at basic image classification. 
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that after my first model had a low mean squared error on the training set but a high mean squared error on the validation set.  This implied that the model was overfitting.  Examining the data set, I found the large number for 0 steering angle data points seemed to be introducing lots of bias and preventing the model from generalizing to turns.
+In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that initially my model had a low mean squared error on the training set but a high mean squared error on the validation set.  This implied that the model was overfitting.  Examining the data set, I found the large number for 0 steering angle data points seemed to be introducing lots of bias and preventing the model from generalizing to turns.
 
-To combat this issue I filtered out the data point where the steering angle was zero.  I then found the model was underfitting and so I augmented the training data by horizontally flipping the images and inverting the associated steering angle. 
+To combat this issue I filtered out the data points where the steering angle was zero.  I then found the model was underfitting and so I augmented the training data by horizontally flipping the images and inverting the associated steering angle. 
 
 The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where one of the edges of the road was not clearly marked with a line or curb and the vehicle tracked off into the dirt.  To improve the driving behavior in these cases, I recorded more data points of the car sucessfully driving through these portions.
 
@@ -86,7 +85,6 @@ The final model architecture is very similar to the initial LeNet model.  The di
 * The first convolutional layer uses a 5x5 kernel with valid padding and a ReLU activation function.  The output depth is 6.  https://keras.io/layers/convolutional/#conv2d
 * Then max pooling is applied with the Keras default 2x2 filter size and a stride of 2. https://keras.io/layers/pooling/#maxpooling2d
 * The 2nd convolutional layer also uses a 5x5 kernel with valid padding and a ReLU activation function.  The output depth is 6.
-* max pooling is applied.
 * Again max pooling is applied with the Keras default 2x2 filter size and a stride of 2.
 * The output is then flattened to 1-D.  https://keras.io/layers/core/#flatten
 * Then a fully connected layer (AKA dense layer) with 120 nodes.  https://keras.io/layers/core/#dense
@@ -102,11 +100,11 @@ To capture good driving behavior, I first recorded one lap on track manually dri
 
 I then recorded then recorded another pass through turns where the curb was not clearly defined such as below.
 
-![Dirt Curb](images/dirt-curb.jpg)
+![Dirt Curb](images/curb-dirt.jpg)
 
 This was enough to get the car to navigate around the track without issue.  Then while the car was successfully driving around the track in autonomous mode I used the manualy override feature to place the car off the center of the lane to see if it could recover when a returned it to autonomous mode and it did. 
 
-To augment the data sat, I also flipped images and angles to augment the data set and ensure there was an even distribution of left and right turn data points.  Here is an example of an image that has been flipped:
+To augment the data set, I generated new data points by flipping images and their corresponding angles for all the existing data points.  This also ensured there was an even distribution of left and right turn data points.  Here is an example of an image that has been flipped:
 
 ![Before](images/before-flip.jpg)
 ![After](images/after-flip.jpg)
