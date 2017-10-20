@@ -69,8 +69,8 @@ model.add(Dense(1))
 
 # Using the Adam optimizer with a Mean Square Error loss function.
 model.compile(loss='mse', optimizer='adam')
-# Found performance did not improve with more than 6 epochs.
-model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=6)
+# Use EarlyStopping to prevent overfitting
+model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=10, callbacks=[EarlyStopping(monitor='val_loss')])
 
 # Save the model architecture and its learned weights so it can "drive" the simulated car with drive.py
 model.save('model.h5')
